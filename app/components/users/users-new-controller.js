@@ -31,8 +31,9 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
                 requestSent = false;
                 if (user && user.id) {
                     flash.success = 'Welcome to the sample app!';
-                    sessionsService.authenticate(ctrl.user);
-                    $location.path(usersService.userPath(user)).replace();
+                    sessionsService.authenticate(ctrl.user).then(function(user) {
+                        $location.path(usersService.userPath(user)).replace();
+                    });
                 }
             });
         }
