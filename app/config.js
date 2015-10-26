@@ -7,13 +7,15 @@ angular
     .config(Config);
 
 Run.$inject = ['SessionsService'];
-Config.$inject = ['$routeProvider'];
+Config.$inject = ['$httpProvider', '$routeProvider'];
 
 function Run(sessionsService) {
     sessionsService.initialize();
 }
 
-function Config($routeProvider) {
+function Config($httpProvider, $routeProvider) {
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     var initAuth = {
         auth: authFn
     };
