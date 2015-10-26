@@ -5,9 +5,9 @@ angular
     .module('angularjsTutorial.users')
     .factory('UsersService', UsersService);
 
-UsersService.$inject = ['$q', '$resource'];
+UsersService.$inject = ['$q', '$resource', 'environment'];
 
-function UsersService($q, $resource) {
+function UsersService($q, $resource, environment) {
     var svc = {};
 
     svc.createUser = createUser;
@@ -20,10 +20,10 @@ function UsersService($q, $resource) {
 
     // Private variables
 
-    var Users = $resource('/api/users/:id', {}, {
+    var Users = $resource(environment.SERVER_URL + '/api/users/:id', {}, {
             update: { method: 'PUT' },
-            isNameAvailable: { method: 'GET', url: '/api/users/valid_name' },
-            isEmailAvailable: { method: 'GET', url: '/api/users/valid_email' }
+            isNameAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_name' },
+            isEmailAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_email' }
         }
     );
 

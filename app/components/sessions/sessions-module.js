@@ -5,7 +5,8 @@ angular.module('angularjsTutorial.sessions', [
     'angular-flash.service',
     'angular-flash.flash-alert-directive',
     'angularjsTutorial.common',
-    'angularjsTutorial.page'
+    'angularjsTutorial.page',
+    'angularjsTutorial.constants'
 ]);
 
 })();

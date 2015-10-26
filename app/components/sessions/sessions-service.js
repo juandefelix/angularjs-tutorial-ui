@@ -5,9 +5,9 @@ angular
     .module('angularjsTutorial.sessions')
     .factory('SessionsService', SessionsService);
 
-SessionsService.$inject = ['$location', '$q', '$resource', '$rootScope', 'flash'];
+SessionsService.$inject = ['$location', '$q', '$resource', '$rootScope', 'environment', 'flash'];
 
-function SessionsService($location, $q, $resource, $rootScope, flash) {
+function SessionsService($location, $q, $resource, $rootScope, environment, flash) {
     var svc = this;
 
     svc.LOGGING_EVENT = 'LoggingEvent';
@@ -25,10 +25,10 @@ function SessionsService($location, $q, $resource, $rootScope, flash) {
 
     // Private variables
 
-    var Sessions = $resource('/api/sessions', {}, {
+    var Sessions = $resource(environment.SERVER_URL + '/api/sessions', {}, {
         authenticate: { method: 'POST' },
-        authenticated: { method: 'GET', url: '/api/sessions/authenticated' },
-        logout: { method: 'DELETE', url: '/api/sessions/logout'}
+        authenticated: { method: 'GET', url: environment.SERVER_URL + '/api/sessions/authenticated' },
+        logout: { method: 'DELETE', url: environment.SERVER_URL + '/api/sessions/logout'}
     });
 
     return svc;
