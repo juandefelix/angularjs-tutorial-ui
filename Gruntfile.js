@@ -1,13 +1,14 @@
 module.exports = function(grunt) {
 
-    // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
-    // Automatically load required Grunt tasks
     require('jit-grunt')(grunt);
 
     require('jit-grunt')(grunt, {
-        protractor: 'grunt-protractor-runner'
+        protractor: 'grunt-protractor-runner',
+        ngconstant: 'grunt-ng-constant',
+        cdnify: 'grunt-google-cdn',
+        useminPrepare: 'grunt-usemin'
     });
 
     grunt.initConfig({
@@ -15,13 +16,14 @@ module.exports = function(grunt) {
 
         wiredep: {
             dev: {
-                src: ['.dev/index.html'],
-                ignorePath:  /\.\.\//
+                src: ['.dev/index.html']
+            },
+            temp: {
+                src: ['.temp/index.html']
             },
             test: {
                 devDependencies: true,
                 src: '<%= karma.unit.configFile %>',
-                ignorePath:  /\.\.\//,
                 fileTypes:{
                     js: {
                         block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
@@ -36,25 +38,78 @@ module.exports = function(grunt) {
             }
         },
 
+        cdnify: {
+            options: {
+                cdn: require('google-cdn-data')
+            },
+            dist: {
+                html: ['dist/index.html']
+            }
+        },
+
+        ngconstant: {
+            options: {
+                wrap: '(function() {\n"use strict";\n{%= __ngModule %}\n})();',
+                name: 'angularjsTutorial.constants'
+            },
+            dev: {
+                options: {
+                    dest: '.dev/components/constants/constants-module.js'
+                },
+                constants: {
+                    environment: {
+                        ENV: 'dev',
+                        SERVER_URL: 'http://localhost:8000'
+                    }
+                }
+            },
+            temp: {
+                options: {
+                    dest: '.temp/app/components/constants/constants-module.js'
+                },
+                constants: {
+                    environment: {
+                        ENV: 'production',
+                        SERVER_URL: 'http://localhost:8000' //'http://thawing-lake-3750.herokuapp.com'
+                    }
+                }
+            }
+        },
+
         injector: {
             options: {
                 template: 'app/index.html',
-                relative: true
+                relative: true,
+                addRootSlash: false
             },
             dev: {
                 files: {
-                    '.dev/index.html': ['.dev/app.js', '.dev/**/*module.js', '.dev/**/*.js', '.dev/**/*.css']
+                    '.dev/index.html': [
+                        '.dev/app.js',
+                        '.dev/**/*module.js',
+                        '.dev/**/*.js',
+                        '.dev/**/*.css'
+                    ]
+                }
+            },
+            dist: {
+                files: {
+                    'dist/index.html': [
+                        'dist/vendor.js',
+                        'dist/<%= pkg.name %>-<%= pkg.version %>.min.js',
+                        'dist/styles.css'
+                    ]
                 }
             }
         },
 
         watch: {
             dev: {
-                files: ['bower_components/*', 'app/**/*.js', 'app/**/*.html',  'app/**/*.css'],
+                files: ['bower_components/*', 'app/**/*.js', 'app/**/*.html'],
                 tasks: ['refresh']
             },
             sass: {
-                files: ['app/**/*.scss', 'app/**/*.sass'],
+                files: ['app/**/*.scss'],
                 tasks: ['sass:dev']
             },
             e2e: {
@@ -71,7 +126,8 @@ module.exports = function(grunt) {
 
         clean: {
             dev: '.dev',
-            dist: 'dist'
+            dist: 'dist',
+            temp: '.temp'
         },
 
         uglify: {
@@ -82,7 +138,12 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'dist/<%= pkg.name %>-<%= pkg.version %>.min.js': ['app/app.js', 'app/**/*module.js', 'app/**/*.js']
+                    'dist/<%= pkg.name %>-<%= pkg.version %>.min.js': [
+                        'app/app.js',
+                        '.temp/app/components/constants/constants-module.js',
+                        'app/**/*module.js',
+                        'app/**/*.js'
+                    ]
                 }
             }
         },
@@ -118,14 +179,39 @@ module.exports = function(grunt) {
                 cwd: 'app/',
                 dest: '.dev/',
                 src: ['**/*.html', '**/*.js']
+            },
+            dist: {
+                expand: true,
+                cwd: 'app/',
+                dest: 'dist',
+                src: ['**/*.html']
+            },
+            temp: {
+                expand: true,
+                cwd: 'app/',
+                dest: '.temp',
+                src: ['index.html']
             }
         },
 
         concurrent: {
             dev: [
                 'sass:dev',
-                'copy:dev'
+                'copy:dev',
+                'ngconstant:dev'
             ]
+        },
+
+        useminPrepare: {
+            html: '.temp/index.html',
+            options: {
+                dest: 'dist',
+                flow: {
+                    steps: {
+                        js: ['concat', 'uglify']
+                    }
+                }
+            }
         },
 
         autoprefixer: {
@@ -136,6 +222,12 @@ module.exports = function(grunt) {
                 options: {
                     map: true
                 }
+            }
+        },
+
+        open: {
+            dev: {
+                path: '.dev/index.html'
             }
         },
 
@@ -157,19 +249,29 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('build_dev', [
+    grunt.registerTask('dev', [
         'clean:dev',
         'concurrent:dev',
         'injector:dev',
         'wiredep:dev',
         'autoprefixer:dev',
+        'open:dev',
         'focus:dev'
     ]);
 
     grunt.registerTask('build', [
         'clean:dist',
+        'clean:temp',
+        'ngconstant:temp',
         'uglify:dist',
-        'sass:dist'
+        'sass:dist',
+        'copy:dist',
+        'copy:temp',
+        'wiredep:temp',
+        'useminPrepare',
+        'concat:generated',
+        'uglify:generated',
+        'injector:dist'
     ]);
 
     grunt.registerTask('refresh', [
