@@ -77,7 +77,7 @@ function Config($routeProvider) {
             resolve: initAuth
         })
         .when('/logout', {
-            templateUrl: 'components/sessions/sessions-delete.html',
+            template: ' ',
             controller: 'SessionsDeleteCtrl',
             resolve: initAuth
         })
