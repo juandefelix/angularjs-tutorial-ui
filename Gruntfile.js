@@ -63,14 +63,14 @@ module.exports = function(grunt) {
                     }
                 }
             },
-            temp: {
+            dist: {
                 options: {
                     dest: '.temp/app/components/constants/constants-module.js'
                 },
                 constants: {
                     environment: {
                         ENV: 'production',
-                        SERVER_URL: 'http://localhost:8000' //'http://thawing-lake-3750.herokuapp.com'
+                        SERVER_URL: 'https://cdelmoral-angularjstutorial.herokuapp.com'
                     }
                 }
             }
@@ -262,7 +262,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'clean:temp',
-        'ngconstant:temp',
+        'ngconstant:dist',
         'uglify:dist',
         'sass:dist',
         'copy:dist',
