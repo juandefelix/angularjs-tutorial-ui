@@ -1,4 +1,4 @@
-# AngularJS Tutorial: sample application
+# AngularJS Tutorial: sample application (client)
 
 This is the sample application for the
 [*Ruby on Rails Tutorial:
