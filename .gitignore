@@ -1,6 +1,11 @@
+env.json
+
 .dev
-bower_components
-node_modules
-.idea
-.temp
+.tmp
 dist
+
+node_modules
+bower_components
+
+// Webstorm files
+.idea

@@ -12,14 +12,16 @@ module.exports = function(grunt) {
     });
 
     grunt.initConfig({
+        env: grunt.file.readJSON('env.json'),
         pkg: grunt.file.readJSON('package.json'),
 
         wiredep: {
             dev: {
-                src: ['.dev/index.html']
+                src: ['.dev/index.html'],
+                ignorePath: '../'
             },
             temp: {
-                src: ['.temp/index.html']
+                src: ['.tmp/index.html']
             },
             test: {
                 devDependencies: true,
@@ -59,18 +61,18 @@ module.exports = function(grunt) {
                 constants: {
                     environment: {
                         ENV: 'dev',
-                        SERVER_URL: 'http://localhost:8000'
+                        SERVER_URL: '<%= env.dev_api_server_url %>'
                     }
                 }
             },
             dist: {
                 options: {
-                    dest: '.temp/app/components/constants/constants-module.js'
+                    dest: '.tmp/app/components/constants/constants-module.js'
                 },
                 constants: {
                     environment: {
                         ENV: 'production',
-                        SERVER_URL: 'https://cdelmoral-angularjstutorial.herokuapp.com'
+                        SERVER_URL: '<%= env.api_server_url %>'
                     }
                 }
             }
@@ -127,7 +129,7 @@ module.exports = function(grunt) {
         clean: {
             dev: '.dev',
             dist: 'dist',
-            temp: '.temp'
+            temp: '.tmp'
         },
 
         uglify: {
@@ -140,7 +142,7 @@ module.exports = function(grunt) {
                 files: {
                     'dist/<%= pkg.name %>-<%= pkg.version %>.min.js': [
                         'app/app.js',
-                        '.temp/app/components/constants/constants-module.js',
+                        '.tmp/app/components/constants/constants-module.js',
                         'app/**/*module.js',
                         'app/**/*.js'
                     ]
@@ -189,7 +191,7 @@ module.exports = function(grunt) {
             temp: {
                 expand: true,
                 cwd: 'app/',
-                dest: '.temp',
+                dest: '.tmp',
                 src: ['index.html']
             }
         },
@@ -203,7 +205,7 @@ module.exports = function(grunt) {
         },
 
         useminPrepare: {
-            html: '.temp/index.html',
+            html: '.tmp/index.html',
             options: {
                 dest: 'dist',
                 flow: {
@@ -227,7 +229,7 @@ module.exports = function(grunt) {
 
         open: {
             dev: {
-                path: '.dev/index.html'
+                path: '<%= env.dev_api_server_url %>'
             }
         },
 
