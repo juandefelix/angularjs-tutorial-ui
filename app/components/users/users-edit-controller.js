@@ -40,10 +40,8 @@
             return usersService.isEmailUnique(value);
         }
 
-        // Private methods
-
         function initializeController() {
-            sessionsService.requireLogin();
+            sessionsService.requireCorrectUser($routeParams.id);
             pageSvc.setPageTitle('Edit user');
             ctrl.user = usersService.getUser($routeParams.id);
         }

@@ -22,8 +22,7 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
     svc.logout = logout;
     svc.initialize = initialize;
     svc.requireLogin = requireLogin;
-
-    // Private variables
+    svc.requireCorrectUser = requireCorrectUser;
 
     var Sessions = $resource(environment.SERVER_URL + '/api/sessions', {}, {
         authenticate: { method: 'POST' },
@@ -63,7 +62,13 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
         }
     }
 
-    // Private methods
+    function requireCorrectUser(id) {
+        requireLogin();
+        if (svc.currentUser.id !== id) {
+            flash.error = 'You don\'t have permissions to access this page.';
+            $location.path('/users/' + svc.currentUser.id);
+        }
+    }
 
     function initialize() {
         var defer = $q.defer();
