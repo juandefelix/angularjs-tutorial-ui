@@ -12,7 +12,7 @@ function UsersService($q, $resource, environment) {
 
     svc.createUser = createUser;
     svc.updateUser = updateUser;
-    svc.getUsersIndex = getUsersIndex;
+    svc.getUsersPage = getUsersPage;
     svc.getUser = getUser;
     svc.userPath = userPath;
     svc.isNameUnique = isNameUnique;
@@ -21,6 +21,11 @@ function UsersService($q, $resource, environment) {
     // Private variables
 
     var Users = $resource(environment.SERVER_URL + '/api/users/:id', {}, {
+            queryPage: {
+                method: 'GET',
+                params: { pageNumber: 1, usersPerPage: 25 },
+                url: environment.SERVER_URL + '/api/users/index_page'
+            },
             update: { method: 'PUT' },
             isNameAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_name' },
             isEmailAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_email' }
@@ -37,8 +42,13 @@ function UsersService($q, $resource, environment) {
         return Users.update({ id: user.id }, user).$promise;
     }
 
-    function getUsersIndex() {
-        return Users.query();
+    function getUsersPage(pageNumber, usersPerPage) {
+        var defer = $q.defer();
+        var query = { pageNumber: pageNumber, usersPerPage: usersPerPage };
+        Users.queryPage(query).$promise.then(function(res) {
+            defer.resolve(res);
+        });
+        return defer.promise;
     }
 
     function getUser(id) {
