@@ -16,9 +16,7 @@ function UsersShowCtrl($routeParams, pageSvc, sessionsService, usersService) {
 
     function initializeController() {
         sessionsService.requireLogin();
-
         pageSvc.setPageTitle('Show user');
-
         ctrl.user = usersService.getUser($routeParams.id);
     }
 }

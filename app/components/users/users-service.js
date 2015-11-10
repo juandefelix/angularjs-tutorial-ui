@@ -17,6 +17,7 @@ function UsersService($q, $resource, environment) {
     svc.userPath = userPath;
     svc.isNameUnique = isNameUnique;
     svc.isEmailUnique = isEmailUnique;
+    svc.deleteUser = deleteUser;
 
     // Private variables
 
@@ -53,6 +54,10 @@ function UsersService($q, $resource, environment) {
 
     function getUser(id) {
         return Users.get({ id: id });
+    }
+
+    function deleteUser(user) {
+        return Users.delete(user).$promise;
     }
 
     function userPath(user) {
