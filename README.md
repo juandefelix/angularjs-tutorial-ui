@@ -16,4 +16,6 @@ Clone repository, create an `env.json` file in the root directory with this stru
 ```
 Change the urls accordingly and then run `npm install` and `bower install`.
 
+For running end to end tests you will also need to run `./node_modules/protractor/bin/webdriver-manager update`.
+
 You are good to go!
