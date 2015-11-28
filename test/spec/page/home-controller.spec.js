@@ -1,16 +1,23 @@
-describe('Controller: HomeCtrl', function() {
+describe('Page home controller', function() {
 
     beforeEach(module('angularjsTutorial.page'));
 
     var HomeCtrl;
     var rootScope;
 
+    beforeEach(angular.mock.module(function($provide) {
+        $provide.service('SessionsService', function() {
+            return { currentUser: null };
+        });
+    }));
+
     beforeEach(inject(function($controller, $rootScope) {
         HomeCtrl = $controller('HomeCtrl', {});
         rootScope = $rootScope.$new();
     }));
 
-    it('should put in rootScope the correct title', function() {
+    it('should be initialized', function() {
         expect(rootScope.title).toBe('Home - AngularJS Tutorial');
+        expect(HomeCtrl.userLoggedIn).toBe(false);
     });
 });

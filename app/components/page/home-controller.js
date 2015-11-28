@@ -14,11 +14,8 @@ function HomeCtrl(pageSvc, sessionsService) {
 
     initializeController();
 
-    // Private methods
-
     function initializeController() {
         ctrl.userLoggedIn = sessionsService.currentUser !== null;
-
         pageSvc.setPageTitle('Home');
     }
 }

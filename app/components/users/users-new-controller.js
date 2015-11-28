@@ -47,8 +47,6 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
         return usersService.isEmailUnique(value);
     }
 
-    // Private methods
-
     function initializeController() {
         if (sessionsService.currentUser) {
             $location.path(usersService.userPath(sessionsService.currentUser)).replace();

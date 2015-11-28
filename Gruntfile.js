@@ -26,6 +26,7 @@ module.exports = function(grunt) {
             test: {
                 devDependencies: true,
                 src: '<%= karma.unit.configFile %>',
+                ignorePath: '../',
                 fileTypes:{
                     js: {
                         block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
@@ -285,20 +286,19 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', [
         'clean:dev',
-        'copy:dev',
+        'concurrent:dev',
         'injector:dev',
-        'wiredep',
+        'wiredep:test',
         'autoprefixer:dev',
         'karma'
     ]);
 
     grunt.registerTask('e2e', [
         'clean:dev',
-        'copy:dev',
+        'concurrent:dev',
         'injector:dev',
         'wiredep:dev',
         'autoprefixer:dev',
-        'express:test',
         'protractor'
     ]);
 };
