@@ -18,8 +18,6 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
     ctrl.isNameUnique = isNameUnique;
     ctrl.isEmailUnique = isEmailUnique;
 
-    // Private variables
-
     var requestSent = false;
 
     initializeController();
@@ -30,10 +28,8 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
             usersService.createUser(ctrl.user).then(function(user) {
                 requestSent = false;
                 if (user && user.id) {
-                    flash.success = 'Welcome to the sample app!';
-                    sessionsService.authenticate(ctrl.user).then(function(user) {
-                        $location.path(usersService.userPath(user)).replace();
-                    });
+                    flash.success = 'Check your email and activate your account before you can log in';
+                    $location.path('/').replace();
                 }
             });
         }

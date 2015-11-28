@@ -19,8 +19,6 @@ function UsersService($q, $resource, environment) {
     svc.isEmailUnique = isEmailUnique;
     svc.deleteUser = deleteUser;
 
-    // Private variables
-
     var Users = $resource(environment.SERVER_URL + '/api/users/:id', {}, {
             queryPage: {
                 method: 'GET',
