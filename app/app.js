@@ -6,7 +6,8 @@ angular
         'angularjsTutorial.core',
         'angularjsTutorial.sessions',
         'angularjsTutorial.page',
-        'angularjsTutorial.users'
+        'angularjsTutorial.users',
+        'angularjsTutorial.passwordResets'
     ]);
 
 })();

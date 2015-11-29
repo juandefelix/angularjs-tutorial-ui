@@ -83,6 +83,12 @@ function Config($httpProvider, $routeProvider) {
             controller: 'SessionsDeleteCtrl',
             resolve: initAuth
         })
+        .when('/reset_password', {
+            templateUrl: 'components/password-resets/password-resets-new.html',
+            controller: 'PasswordResetsNewCtrl',
+            controllerAs: 'ctrl',
+            resolve: initAuth
+        })
         .otherwise({
             redirectTo: '/home'
         });
