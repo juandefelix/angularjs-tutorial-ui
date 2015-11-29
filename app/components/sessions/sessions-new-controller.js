@@ -24,13 +24,11 @@ function SessionsNewCtrl($location, flash, pageSvc, sessionsService) {
                 $location.path(sessionsService.beforeLoginAttempt).replace();
                 sessionsService.beforeLoginAttempt = null;
             }
-        }).catch(function() {
-            flash.error = 'Invalid login';
+        }).catch(function(err) {
+            flash.error = err;
             $location.path('/login').replace();
         });
     }
-
-    // Private methods
 
     function initializeController() {
         if (sessionsService.currentUser) {

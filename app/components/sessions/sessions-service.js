@@ -35,12 +35,15 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
     function authenticate(user) {
         var defer = $q.defer()
         Sessions.authenticate(user, function(user) {
-            if (user && user.id) {
+            console.log(user);
+            if (user.id) {
                 svc.currentUser = user;
                 $rootScope.$broadcast(svc.LOGGING_EVENT);
                 defer.resolve(svc.currentUser);
-            } else {
-                defer.reject();
+            }
+        }, function(httpResponse) {
+            if (httpResponse.status === 403 || httpResponse.status === 401) {
+                defer.reject(httpResponse.data);
             }
         });
         return defer.promise;
