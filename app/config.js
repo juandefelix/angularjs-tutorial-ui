@@ -72,6 +72,11 @@ function Config($httpProvider, $routeProvider) {
             controllerAs: 'ctrl',
             resolve: initAuth
         })
+        .when('/users/activate/:id/:token', {
+            template: ' ',
+            controller: 'UsersActivationCtrl',
+            resolve: initAuth
+        })
         .when('/login', {
             templateUrl: 'components/sessions/sessions-new.html',
             controller: 'SessionsNewCtrl',
@@ -83,9 +88,15 @@ function Config($httpProvider, $routeProvider) {
             controller: 'SessionsDeleteCtrl',
             resolve: initAuth
         })
-        .when('/reset_password', {
+        .when('/password_resets', {
             templateUrl: 'components/password-resets/password-resets-new.html',
             controller: 'PasswordResetsNewCtrl',
+            controllerAs: 'ctrl',
+            resolve: initAuth
+        })
+        .when('/password_resets/:id/:token', {
+            templateUrl: 'components/password-resets/password-resets-edit.html',
+            controller: 'PasswordResetsEditCtrl',
             controllerAs: 'ctrl',
             resolve: initAuth
         })

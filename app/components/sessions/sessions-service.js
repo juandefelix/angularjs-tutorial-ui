@@ -19,6 +19,7 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
     svc.beforeLoginAttempt = null;
 
     svc.authenticate = authenticate;
+    svc.login = login;
     svc.logout = logout;
     svc.initialize = initialize;
     svc.requireLogin = requireLogin;
@@ -35,7 +36,6 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
     function authenticate(user) {
         var defer = $q.defer()
         Sessions.authenticate(user, function(user) {
-            console.log(user);
             if (user.id) {
                 svc.currentUser = user;
                 $rootScope.$broadcast(svc.LOGGING_EVENT);
@@ -47,6 +47,11 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
             }
         });
         return defer.promise;
+    }
+
+    function login(user) {
+        svc.currentUser = user;
+        $rootScope.$broadcast(svc.LOGGING_EVENT);
     }
 
     function logout() {

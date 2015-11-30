@@ -5,19 +5,31 @@ angular
     .module('angularjsTutorial.passwordResets')
     .controller('PasswordResetsNewCtrl', PasswordResetsNewCtrl);
 
-PasswordResetsNewCtrl.$inject = ['PageSvc'];
+PasswordResetsNewCtrl.$inject = ['$location', 'PageSvc', 'PasswordResetsService', 'flash'];
 
-function PasswordResetsNewCtrl(pageSvc) {
+function PasswordResetsNewCtrl($location, pageSvc, passwordResetsService, flash) {
     var ctrl = this;
 
     ctrl.email = null;
 
-    ctrl.requestReset = requestReset;
+    ctrl.createResetToken = createResetToken;
+
+    var requestSent = false;
 
     initializeController();
 
-    function requestReset() {
-        console.log('Reset requested for: ' + ctrl.email);
+    function createResetToken() {
+        if (!requestSent) {
+            requestSent = true;
+            passwordResetsService.createToken(ctrl.email)
+                .then(function(string) {
+                    flash.success = string;
+                    $location.path('/').replace();
+                }).catch(function(err) {
+                    flash.error = err;
+                    $location.path('/').replace();
+                });
+        }
     }
 
     function initializeController() {

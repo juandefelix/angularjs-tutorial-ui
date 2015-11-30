@@ -17,6 +17,7 @@ function UsersService($q, $resource, environment) {
     svc.userPath = userPath;
     svc.isNameUnique = isNameUnique;
     svc.isEmailUnique = isEmailUnique;
+    svc.activateUser = activateUser;
     svc.deleteUser = deleteUser;
 
     var Users = $resource(environment.SERVER_URL + '/api/users/:id', {}, {
@@ -27,7 +28,11 @@ function UsersService($q, $resource, environment) {
             },
             update: { method: 'PUT' },
             isNameAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_name' },
-            isEmailAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_email' }
+            isEmailAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_email' },
+            activateUser: {
+                method: 'PUT',
+                url: environment.SERVER_URL + '/api/users/activate/:id/:token',
+            }
         }
     );
 
@@ -87,6 +92,16 @@ function UsersService($q, $resource, environment) {
             }
         });
 
+        return defer.promise;
+    }
+
+    function activateUser(userId, token) {
+        var defer = $q.defer();
+        Users.activateUser({ id: userId, token: token }, {}, function(response) {
+            defer.resolve(response);
+        }, function(response) {
+            defer.reject(response.data);
+        });
         return defer.promise;
     }
 }
