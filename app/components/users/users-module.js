@@ -9,7 +9,8 @@ angular.module('angularjsTutorial.users', [
     'angular-flash.flash-alert-directive',
     'angularjsTutorial.common',
     'angularjsTutorial.page',
-    'angularjsTutorial.constants'
+    'angularjsTutorial.constants',
+    'angularjsTutorial.microposts'
 ]);
 
 })();

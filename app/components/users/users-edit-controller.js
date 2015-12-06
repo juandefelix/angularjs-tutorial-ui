@@ -43,7 +43,9 @@
         function initializeController() {
             sessionsService.requireCorrectUser($routeParams.id);
             pageSvc.setPageTitle('Edit user');
-            ctrl.user = usersService.getUser($routeParams.id);
+            usersService.getUser($routeParams.id).then(function(res) {
+                ctrl.user
+            });
         }
     }
 

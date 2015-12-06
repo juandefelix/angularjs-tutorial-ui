@@ -5,19 +5,35 @@ angular
     .module('angularjsTutorial.users')
     .controller('UsersShowCtrl', UsersShowCtrl);
 
-UsersShowCtrl.$inject = ['$routeParams', 'PageSvc', 'SessionsService', 'UsersService'];
+UsersShowCtrl.$inject = ['$routeParams', 'MicropostsService', 'PageSvc', 'SessionsService', 'UsersService'];
 
-function UsersShowCtrl($routeParams, pageSvc, sessionsService, usersService) {
+function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService, usersService) {
     var ctrl = this;
 
-    ctrl.user = {};
+    ctrl.user;
+    ctrl.microposts = [];
+    ctrl.pagination = { page: 1, pageItems: 15, total: 0 };
+
+    ctrl.getMicropostsPage = getMicropostsPage;
 
     initializeController();
 
     function initializeController() {
         sessionsService.requireLogin();
         pageSvc.setPageTitle('Show user');
-        ctrl.user = usersService.getUser($routeParams.id);
+        usersService.getUser($routeParams.id)
+            .then(function(res) {
+                ctrl.user = res;
+                getMicropostsPage(ctrl.user.id, ctrl.pagination.page, ctrl.pagination.pageItems);
+            });
+    }
+
+    function getMicropostsPage(userId, pageNumber, pageItems) {
+        micropostsService.getMicropostsPageForUser(userId, pageNumber, pageItems)
+            .then(function(res) {
+                ctrl.microposts = res.microposts;
+                ctrl.pagination.total = res.count;
+            });
     }
 }
 

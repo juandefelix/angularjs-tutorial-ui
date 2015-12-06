@@ -56,7 +56,7 @@ function UsersService($q, $resource, environment) {
     }
 
     function getUser(id) {
-        return Users.get({ id: id });
+        return Users.get({ id: id }).$promise;
     }
 
     function deleteUser(user) {
