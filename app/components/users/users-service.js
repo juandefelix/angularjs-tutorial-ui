@@ -18,6 +18,7 @@ function UsersService($q, $resource, environment) {
     svc.isNameUnique = isNameUnique;
     svc.isEmailUnique = isEmailUnique;
     svc.activateUser = activateUser;
+    svc.createMicropost = createMicropost;
     svc.deleteUser = deleteUser;
 
     var Users = $resource(environment.SERVER_URL + '/api/users/:id', {}, {
@@ -32,6 +33,10 @@ function UsersService($q, $resource, environment) {
             activateUser: {
                 method: 'PUT',
                 url: environment.SERVER_URL + '/api/users/activate/:id/:token',
+            },
+            createMicropost: {
+                method: 'PUT',
+                url: environment.SERVER_URL + '/api/users/new_micropost/:id'
             }
         }
     );
@@ -40,6 +45,10 @@ function UsersService($q, $resource, environment) {
 
     function createUser(user) {
         return Users.save(user).$promise;
+    }
+
+    function createMicropost(userId, micropost) {
+        return Users.createMicropost({ id: userId }, micropost).$promise;
     }
 
     function updateUser(user) {

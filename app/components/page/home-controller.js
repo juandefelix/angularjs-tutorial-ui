@@ -5,18 +5,44 @@ angular
     .module('angularjsTutorial.page')
     .controller('HomeCtrl', HomeCtrl);
 
-HomeCtrl.$inject = ['PageSvc', 'SessionsService'];
+HomeCtrl.$inject = ['PageSvc', 'SessionsService', 'MicropostsService', 'UsersService'];
 
-function HomeCtrl(pageSvc, sessionsService) {
+function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
     var ctrl = this;
 
     ctrl.userLoggedIn = false;
+    ctrl.currentUser;
+    ctrl.currentUserCount;
+    ctrl.micropostContent;
+
+    ctrl.pluralize = pluralize;
+    ctrl.createMicropost = createMicropost;
 
     initializeController();
 
     function initializeController() {
-        ctrl.userLoggedIn = sessionsService.currentUser !== null;
+        ctrl.currentUser = sessionsService.currentUser;
+        ctrl.userLoggedIn = ctrl.currentUser !== null;
         pageSvc.setPageTitle('Home');
+    }
+
+    function pluralize(count, item) {
+        if (count === 1) {
+            return '1 ' + item;
+        } else if (count < 1) {
+            return '0 ' + item + 's';
+        } else {
+            return count + ' ' + item + 's';
+        }
+    }
+
+    function createMicropost() {
+        console.log(ctrl.currentUser.id);
+        usersService.createMicropost(ctrl.currentUser.id, {content: ctrl.micropostContent})
+            .then(function(user) {
+                sessionsService.login(user);
+                ctrl.currentUser = user;
+            });
     }
 }
 

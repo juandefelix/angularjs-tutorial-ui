@@ -24,11 +24,9 @@
 
         function updateUser() {
             usersService.updateUser(ctrl.user).then(function(user) {
-                if (user && user.id) {
-                    flash.success = 'Your profile was successfully updated!';
-                    sessionsService.currentUser = user;
-                    $location.path(usersService.userPath(user)).replace();
-                }
+                flash.success = 'Your profile was successfully updated!';
+                sessionsService.currentUser = user;
+                $location.path(usersService.userPath(user)).replace();
             })
         }
 
@@ -43,9 +41,7 @@
         function initializeController() {
             sessionsService.requireCorrectUser($routeParams.id);
             pageSvc.setPageTitle('Edit user');
-            usersService.getUser($routeParams.id).then(function(res) {
-                ctrl.user
-            });
+            ctrl.user = sessionsService.currentUser;
         }
     }
 

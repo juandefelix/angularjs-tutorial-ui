@@ -2,7 +2,8 @@
 'use strict';
 
 angular.module('angularjsTutorial.page', [
-    'ngRoute'
+    'ngRoute',
+    'angularjsTutorial.common'
 ]);
 
 })();
