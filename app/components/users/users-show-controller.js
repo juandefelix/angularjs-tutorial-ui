@@ -24,12 +24,14 @@ function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService
         usersService.getUser($routeParams.id)
             .then(function(res) {
                 ctrl.user = res;
-                getMicropostsPage(ctrl.user.id, ctrl.pagination.page, ctrl.pagination.pageItems);
+                getMicropostsPage(ctrl.pagination.page);
             });
     }
 
-    function getMicropostsPage(userId, pageNumber, pageItems) {
-        micropostsService.getMicropostsPageForUser(userId, pageNumber, pageItems)
+    function getMicropostsPage(pageNumber) {
+        ctrl.pagination.page = pageNumber;
+
+        micropostsService.getMicropostsPageForUser(ctrl.user.id, pageNumber, ctrl.pagination.pageItems)
             .then(function(res) {
                 ctrl.microposts = res.microposts;
                 ctrl.pagination.total = res.count;

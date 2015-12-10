@@ -15,7 +15,7 @@ function UsersIndexCtrl(pageSvc, sessionsService, usersService) {
     ctrl.users = [];
     ctrl.totalUsers = 0;
     ctrl.usersPerPage = 10;
-    ctrl.pagination = {current: 1};
+    ctrl.pagination = { current: 1 };
 
     ctrl.userIsAdmin = userIsAdmin;
     ctrl.getUsersPage = getUsersPage;
@@ -28,6 +28,8 @@ function UsersIndexCtrl(pageSvc, sessionsService, usersService) {
     }
 
     function getUsersPage(pageNumber) {
+        ctrl.pagination.current = pageNumber;
+        
         usersService.getUsersPage(pageNumber, ctrl.usersPerPage).then(function(usersPage) {
             ctrl.users = usersPage.users;
             ctrl.totalUsers = usersPage.count;
