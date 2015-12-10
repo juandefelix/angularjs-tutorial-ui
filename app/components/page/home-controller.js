@@ -37,7 +37,6 @@ function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
     }
 
     function createMicropost() {
-        console.log(ctrl.currentUser.id);
         usersService.createMicropost(ctrl.currentUser.id, {content: ctrl.micropostContent})
             .then(function(user) {
                 sessionsService.login(user);

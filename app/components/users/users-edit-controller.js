@@ -11,10 +11,10 @@
         var ctrl = this;
 
         /** User being edited. */
-        ctrl.user = {};
-
-        /** Holds the password confirmation. */
-        ctrl.confirmation = '';
+        ctrl.username;
+        ctrl.email;
+        ctrl.password;
+        ctrl.confirmation;
 
         ctrl.updateUser = updateUser;
         ctrl.isNameUnique = isNameUnique;
@@ -23,10 +23,17 @@
         initializeController();
 
         function updateUser() {
-            usersService.updateUser(ctrl.user).then(function(user) {
-                flash.success = 'Your profile was successfully updated!';
-                sessionsService.currentUser = user;
-                $location.path(usersService.userPath(user)).replace();
+            var user = {
+                id: sessionsService.currentUser.id,
+                name: ctrl.username,
+                email: ctrl.email,
+                password: ctrl.password
+            };
+
+            usersService.updateUser(user).then(function(resp) {
+                flash.success = resp.message;
+                sessionsService.login(resp.user);
+                $location.path(usersService.userPath(resp.user)).replace();
             })
         }
 
@@ -41,7 +48,8 @@
         function initializeController() {
             sessionsService.requireCorrectUser($routeParams.id);
             pageSvc.setPageTitle('Edit user');
-            ctrl.user = sessionsService.currentUser;
+            ctrl.username = sessionsService.currentUser.name;
+            ctrl.email = sessionsService.currentUser.email;
         }
     }
 
