@@ -9,6 +9,7 @@ HomeCtrl.$inject = ['PageSvc', 'SessionsService', 'MicropostsService', 'UsersSer
 
 function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
     var ctrl = this;
+    var requestSent;
 
     ctrl.userLoggedIn = false;
     ctrl.currentUser;
@@ -37,11 +38,16 @@ function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
     }
 
     function createMicropost() {
-        usersService.createMicropost(ctrl.currentUser.id, {content: ctrl.micropostContent})
-            .then(function(user) {
-                sessionsService.login(user);
-                ctrl.currentUser = user;
-            });
+        if (!requestSent) {
+            requestSent = true;
+            usersService.createMicropost(ctrl.currentUser.id, {content: ctrl.micropostContent})
+                .then(function(user) {
+                    requestSent = false;
+                    sessionsService.login(user);
+                    ctrl.currentUser = user;
+                    ctrl.micropostContent = null;
+                });
+        }
     }
 }
 
