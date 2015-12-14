@@ -25,6 +25,15 @@ function atSubmit($parse) {
         ctrl.setFormCtrl = setFormCtrl;
         ctrl.needsAttention = needsAttention;
         ctrl.setAttempted = setAttempted;
+        ctrl.resetSubmission = resetSubmission;
+
+        function resetSubmission() {
+            attempted = false;
+
+            if (formCtrl) {
+                formCtrl.$setPristine();
+            }
+        }
 
         function setAttempted() {
             attempted = true;
@@ -80,6 +89,7 @@ function atSubmit($parse) {
                 } else {
                     scope.$apply(function() {
                         fn(scope, { $event: event });
+                        submitCtrl.resetSubmission();
                     });
                 }
             });
