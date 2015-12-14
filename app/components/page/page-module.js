@@ -3,7 +3,9 @@
 
 angular.module('angularjsTutorial.page', [
     'ngRoute',
-    'angularjsTutorial.common'
+    'angularjsTutorial.common',
+    'angularjsTutorial.microposts',
+    'angularjsTutorial.users'
 ]);
 
 })();
