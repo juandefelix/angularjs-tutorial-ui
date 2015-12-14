@@ -25,12 +25,10 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
     function createUser() {
         if (!requestSent) {
             requestSent = true;
-            usersService.createUser(ctrl.user).then(function(user) {
+            usersService.createUser(ctrl.user).then(function(res) {
                 requestSent = false;
-                if (user && user.id) {
-                    flash.success = 'Check your email and activate your account before you can log in';
-                    $location.path('/').replace();
-                }
+                flash.success = 'Check your email and activate your account before you can log in';
+                $location.path('/').replace();
             });
         }
     }
