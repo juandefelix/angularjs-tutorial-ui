@@ -12,12 +12,15 @@ function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
     var requestSent;
 
     ctrl.userLoggedIn = false;
-    ctrl.currentUser;
-    ctrl.currentUserCount;
-    ctrl.micropostContent;
+    ctrl.currentUser = {};
+    ctrl.currentUserCount = 0;
+    ctrl.micropostContent = null;
+    ctrl.microposts = [];
+    ctrl.pagination = { page: 1, pageItems: 7, total: 0 };
 
     ctrl.pluralize = pluralize;
     ctrl.createMicropost = createMicropost;
+    ctrl.getMicropostFeedPage = getMicropostFeedPage;
 
     initializeController();
 
@@ -25,6 +28,10 @@ function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
         ctrl.currentUser = sessionsService.currentUser;
         ctrl.userLoggedIn = ctrl.currentUser !== null;
         pageSvc.setPageTitle('Home');
+
+        if (ctrl.userLoggedIn) {
+            getMicropostFeedPage(ctrl.pagination.pageNumber);
+        }
     }
 
     function pluralize(count, item) {
@@ -46,8 +53,19 @@ function HomeCtrl(pageSvc, sessionsService, micropostsService, usersService) {
                     sessionsService.login(user);
                     ctrl.currentUser = user;
                     ctrl.micropostContent = null;
+                    getMicropostFeedPage(ctrl.pagination.pageNumber);
                 });
         }
+    }
+
+    function getMicropostFeedPage(pageNumber) {
+        ctrl.pagination.page = pageNumber;
+
+        micropostsService.getMicropostsFeedPageForUser(ctrl.currentUser.id, pageNumber, ctrl.pagination.pageItems)
+            .then(function(res) {
+                ctrl.microposts = res.microposts;
+                ctrl.pagination.total = res.count;
+            });
     }
 }
 

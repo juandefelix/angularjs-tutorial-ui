@@ -28,7 +28,7 @@ function UsersActivationCtrl($location, $routeParams, flash, pageSvc, sessionsSe
             }).catch(function(err) {
                 flash.error = err;
                 $location.path('/').replace();
-            })
+            });
     }
 }
 

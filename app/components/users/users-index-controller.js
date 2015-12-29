@@ -33,7 +33,7 @@ function UsersIndexCtrl(pageSvc, sessionsService, usersService) {
         usersService.getUsersPage(pageNumber, ctrl.usersPerPage).then(function(usersPage) {
             ctrl.users = usersPage.users;
             ctrl.totalUsers = usersPage.count;
-        })
+        });
     }
 
     function deleteUser(user) {

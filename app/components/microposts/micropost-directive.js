@@ -1,6 +1,6 @@
+(function() {
 'use strict';
 
-(function() {
 angular
     .module('angularjsTutorial.microposts')
     .directive('atMicropost', atMicropost);

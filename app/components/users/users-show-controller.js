@@ -10,9 +10,9 @@ UsersShowCtrl.$inject = ['$routeParams', 'MicropostsService', 'PageSvc', 'Sessio
 function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService, usersService) {
     var ctrl = this;
 
-    ctrl.user;
+    ctrl.user = {};
     ctrl.microposts = [];
-    ctrl.pagination = { page: 1, pageItems: 15, total: 0 };
+    ctrl.pagination = { page: 1, pageItems: 7, total: 0 };
 
     ctrl.getMicropostsPage = getMicropostsPage;
 
