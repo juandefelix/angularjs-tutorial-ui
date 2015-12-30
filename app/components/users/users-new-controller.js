@@ -10,9 +10,8 @@ UsersNewCtrl.$inject = ['$location', 'PageSvc', 'SessionsService', 'UsersService
 function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) {
     var ctrl = this;
 
-    ctrl.user = {};
-
-    ctrl.confirmation = '';
+    ctrl.newUser = {};
+    ctrl.confirmation = null;
 
     ctrl.createUser = createUser;
     ctrl.isNameUnique = isNameUnique;
@@ -25,11 +24,12 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
     function createUser() {
         if (!requestSent) {
             requestSent = true;
-            usersService.createUser(ctrl.user).then(function(res) {
-                requestSent = false;
-                flash.success = 'Check your email and activate your account before you can log in';
-                $location.path('/').replace();
-            });
+            usersService.createUser(ctrl.newUser)
+                .then(function(res) {
+                    requestSent = false;
+                    flash.success = res.message;
+                    $location.path('/').replace();
+                });
         }
     }
 
@@ -42,11 +42,10 @@ function UsersNewCtrl($location, pageSvc, sessionsService, usersService, flash) 
     }
 
     function initializeController() {
+        pageSvc.setPageTitle('Sign up');
         if (sessionsService.currentUser) {
             $location.path(usersService.userPath(sessionsService.currentUser)).replace();
         }
-
-        pageSvc.setPageTitle('Sign up');
     }
 }
 

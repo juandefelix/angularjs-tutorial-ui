@@ -24,6 +24,7 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
     svc.initialize = initialize;
     svc.requireLogin = requireLogin;
     svc.requireCorrectUser = requireCorrectUser;
+    svc.currentUserIsAdmin = currentUserIsAdmin;
 
     var Sessions = $resource(environment.SERVER_URL + '/api/sessions', {}, {
         authenticate: { method: 'POST' },
@@ -33,8 +34,12 @@ function SessionsService($location, $q, $resource, $rootScope, environment, flas
 
     return svc;
 
+    function currentUserIsAdmin() {
+        return svc.currentUser !== null && svc.currentUser.admin;
+    }
+
     function authenticate(user) {
-        var defer = $q.defer()
+        var defer = $q.defer();
         Sessions.authenticate(user, function(user) {
             if (user.id) {
                 svc.currentUser = user;

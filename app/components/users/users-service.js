@@ -55,13 +55,9 @@ function UsersService($q, $resource, environment) {
         return Users.update({ id: user.id }, user).$promise;
     }
 
-    function getUsersPage(pageNumber, usersPerPage) {
-        var defer = $q.defer();
-        var query = { pageNumber: pageNumber, usersPerPage: usersPerPage };
-        Users.queryPage(query).$promise.then(function(res) {
-            defer.resolve(res);
-        });
-        return defer.promise;
+    function getUsersPage(page, itemsPerPage) {
+        var query = { pageNumber: page, usersPerPage: itemsPerPage };
+        return Users.queryPage(query).$promise;
     }
 
     function getUser(id) {

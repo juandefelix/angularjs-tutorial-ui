@@ -10,11 +10,7 @@
     function UsersEditCtrl($location, $q, $routeParams, pageSvc, sessionsService, usersService, flash) {
         var ctrl = this;
 
-        /** User being edited. */
-        ctrl.username;
-        ctrl.email;
-        ctrl.password;
-        ctrl.confirmation;
+        ctrl.editUser = {};
 
         ctrl.updateUser = updateUser;
         ctrl.isNameUnique = isNameUnique;
@@ -23,18 +19,18 @@
         initializeController();
 
         function updateUser() {
-            var user = {
+            var editUser = {
                 id: sessionsService.currentUser.id,
-                name: ctrl.username,
-                email: ctrl.email,
-                password: ctrl.password
+                name: ctrl.editUser.username,
+                email: ctrl.editUser.email,
+                password: ctrl.editUser.password
             };
 
-            usersService.updateUser(user).then(function(resp) {
+            usersService.updateUser(editUser).then(function(resp) {
                 flash.success = resp.message;
                 sessionsService.login(resp.user);
                 $location.path(usersService.userPath(resp.user)).replace();
-            })
+            });
         }
 
         function isNameUnique(value) {
@@ -46,10 +42,10 @@
         }
 
         function initializeController() {
-            sessionsService.requireCorrectUser($routeParams.id);
             pageSvc.setPageTitle('Edit user');
-            ctrl.username = sessionsService.currentUser.name;
-            ctrl.email = sessionsService.currentUser.email;
+            sessionsService.requireCorrectUser($routeParams.id);
+            ctrl.editUser.username = sessionsService.currentUser.name;
+            ctrl.editUser.email = sessionsService.currentUser.email;
         }
     }
 

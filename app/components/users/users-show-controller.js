@@ -12,15 +12,15 @@ function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService
 
     ctrl.user = {};
     ctrl.microposts = [];
-    ctrl.pagination = { page: 1, pageItems: 7, total: 0 };
+    ctrl.pagination = { page: 1, itemsPerPage: 7, totalItems: 0 };
 
     ctrl.getMicropostsPage = getMicropostsPage;
 
     initializeController();
 
     function initializeController() {
-        sessionsService.requireLogin();
         pageSvc.setPageTitle('Show user');
+        sessionsService.requireLogin();
         usersService.getUser($routeParams.id)
             .then(function(res) {
                 ctrl.user = res;
@@ -28,13 +28,13 @@ function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService
             });
     }
 
-    function getMicropostsPage(pageNumber) {
-        ctrl.pagination.page = pageNumber;
+    function getMicropostsPage(newPageNumber) {
+        ctrl.pagination.page = newPageNumber;
 
-        micropostsService.getMicropostsPageForUser(ctrl.user.id, pageNumber, ctrl.pagination.pageItems)
+        micropostsService.getMicropostsPageForUser(ctrl.user.id, newPageNumber, ctrl.pagination.itemsPerPage)
             .then(function(res) {
                 ctrl.microposts = res.microposts;
-                ctrl.pagination.total = res.count;
+                ctrl.pagination.totalItems = res.count;
             });
     }
 }

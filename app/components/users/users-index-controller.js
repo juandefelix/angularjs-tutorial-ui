@@ -13,39 +13,34 @@ function UsersIndexCtrl(pageSvc, sessionsService, usersService) {
     ctrl.CONFIRM = 'Are you sure you want to delete the User?';
 
     ctrl.users = [];
-    ctrl.totalUsers = 0;
-    ctrl.usersPerPage = 10;
-    ctrl.pagination = { current: 1 };
+    ctrl.pagination = { page: 1, totalItems: 0, itemsPerPage: 10 };
 
-    ctrl.userIsAdmin = userIsAdmin;
+    ctrl.currentUserIsAdmin = sessionsService.currentUserIsAdmin;
     ctrl.getUsersPage = getUsersPage;
     ctrl.deleteUser = deleteUser;
 
     initializeController();
 
-    function userIsAdmin() {
-        return sessionsService.currentUser.admin;
-    }
+    function getUsersPage(newPageNumber) {
+        ctrl.pagination.page = newPageNumber;
 
-    function getUsersPage(pageNumber) {
-        ctrl.pagination.current = pageNumber;
-        
-        usersService.getUsersPage(pageNumber, ctrl.usersPerPage).then(function(usersPage) {
-            ctrl.users = usersPage.users;
-            ctrl.totalUsers = usersPage.count;
-        });
+        usersService.getUsersPage(ctrl.pagination.page, ctrl.pagination.itemsPerPage)
+            .then(function(resp) {
+                ctrl.users = resp.users;
+                ctrl.pagination.totalItems = resp.count;
+            });
     }
 
     function deleteUser(user) {
         usersService.deleteUser(user).then(function() {
-            getUsersPage(ctrl.pagination.current);
+            getUsersPage(ctrl.pagination.page);
         });
     }
 
     function initializeController() {
-        sessionsService.requireLogin();
         pageSvc.setPageTitle('Users');
-        getUsersPage(ctrl.pagination.current);
+        sessionsService.requireLogin();
+        getUsersPage(ctrl.pagination.page);
     }
 }
 
