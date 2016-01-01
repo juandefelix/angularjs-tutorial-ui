@@ -5,14 +5,13 @@ angular
     .module('angularjsTutorial.users')
     .controller('UsersShowCtrl', UsersShowCtrl);
 
-UsersShowCtrl.$inject = ['$routeParams', 'MicropostsService', 'PageSvc', 'SessionsService', 'UsersService'];
+UsersShowCtrl.$inject = ['$routeParams', '$scope', 'MicropostsService', 'PageSvc', 'SessionsService', 'UsersService'];
 
-function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService, usersService) {
+function UsersShowCtrl($routeParams, $scope, micropostsService, pageSvc, sessionsService, usersService) {
     var ctrl = this;
 
     ctrl.user = {};
-    ctrl.microposts = [];
-    ctrl.pagination = { page: 1, itemsPerPage: 7, totalItems: 0 };
+    ctrl.micropostPage = micropostsService.userMicropostPage;
 
     ctrl.getMicropostsPage = getMicropostsPage;
 
@@ -24,18 +23,13 @@ function UsersShowCtrl($routeParams, micropostsService, pageSvc, sessionsService
         usersService.getUser($routeParams.id)
             .then(function(res) {
                 ctrl.user = res;
-                getMicropostsPage(ctrl.pagination.page);
+                getMicropostsPage(1);
             });
     }
 
     function getMicropostsPage(newPageNumber) {
-        ctrl.pagination.page = newPageNumber;
-
-        micropostsService.getMicropostsPageForUser(ctrl.user.id, newPageNumber, ctrl.pagination.itemsPerPage)
-            .then(function(res) {
-                ctrl.microposts = res.microposts;
-                ctrl.pagination.totalItems = res.count;
-            });
+        micropostsService.getMicropostsPage(ctrl.user.id, newPageNumber,
+            micropostsService.userMicropostPage.itemsPerPage);
     }
 }
 

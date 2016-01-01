@@ -1,6 +1,9 @@
 (function() {
 'use strict';
 
-angular.module('angularjsTutorial.microposts', []);
+angular.module('angularjsTutorial.microposts', [
+	'angularjsTutorial.sessions',
+	'angularjsTutorial.common'
+]);
 
 })();

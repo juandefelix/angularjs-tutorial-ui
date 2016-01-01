@@ -17,12 +17,27 @@ function atMicropost() {
         templateUrl: 'components/microposts/micropost.html'
     };
 
+    controllerFn.$inject = ['$route', '$scope', 'SessionsService', 'UsersService'];
+
     return directive;
 
-    function controllerFn() {
+    function controllerFn($route, $scope, sessionsService, usersService) {
         var ctrl = this;
 
+        ctrl.CONFIRM = 'Are you sure you want to delete this micropost?';
+
         ctrl.timeAgoInWords = timeAgoInWords;
+        ctrl.isCurrentUser = isCurrentUser;
+        ctrl.deleteMicropost = deleteMicropost;
+
+        function isCurrentUser() {
+            return $scope.user.id === sessionsService.currentUser.id;
+        }
+
+        function deleteMicropost() {
+            usersService.deleteMicropost($scope.user.id, $scope.micropost.id);
+            $route.reload();
+        }
 
         function timeAgoInWords(startDate) {
             var now = Date.now();

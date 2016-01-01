@@ -10,17 +10,6 @@ UsersService.$inject = ['$q', '$resource', 'environment'];
 function UsersService($q, $resource, environment) {
     var svc = {};
 
-    svc.createUser = createUser;
-    svc.updateUser = updateUser;
-    svc.getUsersPage = getUsersPage;
-    svc.getUser = getUser;
-    svc.userPath = userPath;
-    svc.isNameUnique = isNameUnique;
-    svc.isEmailUnique = isEmailUnique;
-    svc.activateUser = activateUser;
-    svc.createMicropost = createMicropost;
-    svc.deleteUser = deleteUser;
-
     var Users = $resource(environment.SERVER_URL + '/api/users/:id', {}, {
             queryPage: {
                 method: 'GET',
@@ -37,9 +26,28 @@ function UsersService($q, $resource, environment) {
             createMicropost: {
                 method: 'PUT',
                 url: environment.SERVER_URL + '/api/users/new_micropost/:id'
+            },
+            deleteMicropost: {
+                method: 'DELETE',
+                url: environment.SERVER_URL + '/api/users/:id/:micropost_id'
             }
         }
     );
+
+    svc.createUser = createUser;
+    svc.updateUser = updateUser;
+    svc.getUsersPage = getUsersPage;
+    svc.getUser = getUser;
+    svc.userPath = userPath;
+    svc.isNameUnique = isNameUnique;
+    svc.isEmailUnique = isEmailUnique;
+    svc.activateUser = activateUser;
+    svc.createMicropost = createMicropost;
+    svc.deleteUser = deleteUser;
+
+    svc.deleteMicropost = function(userId, micropostId) {
+        Users.deleteMicropost({ id: userId, micropost_id: micropostId });
+    };
 
     return svc;
 
@@ -65,7 +73,7 @@ function UsersService($q, $resource, environment) {
     }
 
     function deleteUser(user) {
-        return Users.delete(user).$promise;
+        return Users.delete({ id: user.id }).$promise;
     }
 
     function userPath(user) {
