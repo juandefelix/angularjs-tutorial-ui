@@ -17,8 +17,8 @@ function UsersService($q, $resource, environment) {
                 url: environment.SERVER_URL + '/api/users/index_page'
             },
             update: { method: 'PUT' },
-            isNameAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_name' },
-            isEmailAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/valid_email' },
+            isNameAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/is_unique' },
+            isEmailAvailable: { method: 'GET', url: environment.SERVER_URL + '/api/users/is_unique' },
             activateUser: {
                 method: 'PUT',
                 url: environment.SERVER_URL + '/api/users/activate/:id/:token',
