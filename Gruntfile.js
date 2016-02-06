@@ -250,6 +250,8 @@ module.exports = function(grunt) {
             },
             all: {}
         }
+
+        // npm version prerelease --no-git-tag-version version
     });
 
     grunt.registerTask('dev', [
