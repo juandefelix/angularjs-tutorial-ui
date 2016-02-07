@@ -8,7 +8,8 @@ module.exports = function(grunt) {
         protractor: 'grunt-protractor-runner',
         ngconstant: 'grunt-ng-constant',
         cdnify: 'grunt-google-cdn',
-        useminPrepare: 'grunt-usemin'
+        useminPrepare: 'grunt-usemin',
+        shell: 'grunt-shell-spawn'
     });
 
     grunt.initConfig({
