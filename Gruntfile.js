@@ -249,6 +249,12 @@ module.exports = function(grunt) {
                 args: {}
             },
             all: {}
+        },
+
+        shell: {
+            prerelease: {
+                command: 'npm version prerelease --no-git-tag-version; npm publish; git add package.json; git commit -m "Update prerelease version"'
+            }
         }
 
         // npm version prerelease --no-git-tag-version version
@@ -277,6 +283,11 @@ module.exports = function(grunt) {
         'concat:generated',
         'uglify:generated',
         'injector:dist'
+    ]);
+
+    grunt.registerTask('build_prerelease', [
+        'build',
+        'shell:prerelease'
     ]);
 
     grunt.registerTask('refresh', [
