@@ -1,6 +1,6 @@
 {
   "name": "angularjs-tutorial-ui",
-  "version": "0.0.0-alpha.16",
+  "version": "0.0.0-alpha.18",
   "description": "This is the client side for the sample application for the Ruby on Rails Tutorial: Learn Web Development with Rails by Michael Hartl made with the MEAN stack.",
   "main": "app/app.js",
   "repository": {
@@ -13,6 +13,9 @@
     "url": "https://github.com/cdelmoral/angularjs-tutorial-ui/issues"
   },
   "homepage": "https://github.com/cdelmoral/angularjs-tutorial-ui#readme",
+  "scripts": {
+    "prerelease": "scripts/prerelease.sh"
+  },
   "devDependencies": {
     "google-cdn": "^1.0.0",
     "google-cdn-data": "^0.1.23",
