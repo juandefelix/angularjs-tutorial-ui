@@ -14,7 +14,6 @@ REMOTE_BRANCH=${REMOTE_BRANCH:?'You need to configure the REMOTE_BRANCH environm
 
 set -e
 
-# git add package.json;
-# git commit -m "Update prerelease version --skip-ci";
+git commit -a -m "Update prerelease version --skip-ci";
 git fetch --unshallow || true
 git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
