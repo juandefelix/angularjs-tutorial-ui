@@ -254,11 +254,9 @@ module.exports = function(grunt) {
 
         shell: {
             prerelease: {
-                command: 'npm version prerelease --no-git-tag-version; npm publish; git add package.json; git commit -m "Update prerelease version"'
+                command: 'npm run prerelease'
             }
         }
-
-        // npm version prerelease --no-git-tag-version version
     });
 
     grunt.registerTask('dev', [
