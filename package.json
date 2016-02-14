@@ -14,7 +14,8 @@
   },
   "homepage": "https://github.com/cdelmoral/angularjs-tutorial-ui#readme",
   "scripts": {
-    "prerelease": "scripts/prerelease.sh"
+    "prerelease": "scripts/prerelease.sh",
+    "git_push": "scripts/git_push.sh"
   },
   "devDependencies": {
     "google-cdn": "^1.0.0",
@@ -37,7 +38,6 @@
     "grunt-open": "^0.2.3",
     "grunt-protractor-runner": "^2.0.0",
     "grunt-sass": "^1.0.0",
-    "grunt-shell-spawn": "^0.3.10",
     "grunt-usemin": "^3.1.1",
     "grunt-wiredep": "^2.0.0",
     "jasmine-core": "^2.3.4",

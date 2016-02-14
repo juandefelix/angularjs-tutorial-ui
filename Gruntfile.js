@@ -8,8 +8,7 @@ module.exports = function(grunt) {
         protractor: 'grunt-protractor-runner',
         ngconstant: 'grunt-ng-constant',
         cdnify: 'grunt-google-cdn',
-        useminPrepare: 'grunt-usemin',
-        shell: 'grunt-shell-spawn'
+        useminPrepare: 'grunt-usemin'
     });
 
     grunt.initConfig({
@@ -250,12 +249,6 @@ module.exports = function(grunt) {
                 args: {}
             },
             all: {}
-        },
-
-        shell: {
-            prerelease: {
-                command: 'npm run prerelease'
-            }
         }
     });
 
@@ -282,11 +275,6 @@ module.exports = function(grunt) {
         'concat:generated',
         'uglify:generated',
         'injector:dist'
-    ]);
-
-    grunt.registerTask('build_prerelease', [
-        'build',
-        'shell:prerelease'
     ]);
 
     grunt.registerTask('refresh', [
