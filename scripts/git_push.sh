@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/bin/bash
 # Deploy to via pushing to a remote git repository.
 #
 # Add the following environment variables to your project configuration and make
