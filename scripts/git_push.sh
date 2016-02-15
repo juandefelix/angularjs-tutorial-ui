@@ -14,6 +14,6 @@ REMOTE_BRANCH=${REMOTE_BRANCH:?'You need to configure the REMOTE_BRANCH environm
 
 set -e
 
-git add package.xml
-git commit -m "Update prerelease version --skip-ci";
-git push ${REMOTE_REPOSITORY} ${CI_COMMIT_ID}:${REMOTE_BRANCH}
+git checkout master
+git commit -am "Update prerelease version --skip-ci"
+git push ${REMOTE_REPOSITORY} ${CI_BRANCH}:${REMOTE_BRANCH}
