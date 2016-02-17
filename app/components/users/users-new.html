@@ -37,7 +37,8 @@
         <div ng-message="email">Invalid email address</div>
       </div>
 
-      <div class="form-group" ng-class="{'has-error': at.userForm.needsAttention(userForm.password)}">
+      <div class="form-group"
+           ng-class="{'has-error': at.userForm.needsAttention(userForm.password)}">
         <label for="password" class="control-label">Password</label>
         <input id="password" name="password" class="form-control"
                type="password" placeholder="Password" required
@@ -46,13 +47,15 @@
       </div>
 
       <div class="help-error" role="alert"
-           ng-messages="userForm.password.$error" ng-if="at.userForm.needsAttention(userForm.password)">
+           ng-messages="userForm.password.$error"
+           ng-if="at.userForm.needsAttention(userForm.password)">
         <div ng-message="required">Password is required</div>
         <div ng-message="minlength">Password should be at least 6 characters long</div>
         <div ng-message="maxlength">Password can't be longer than 255 characters</div>
       </div>
 
-      <div class="form-group" ng-class="{'has-error': at.userForm.needsAttention(userForm.password_confirmation)}">
+      <div class="form-group"
+           ng-class="{'has-error': at.userForm.needsAttention(userForm.password_confirmation)}">
         <label for="password_confirmation" class="control-label">Confirmation</label>
         <input id="password_confirmation" name="password_confirmation" class="form-control"
                type="password" placeholder="Confirm password"
