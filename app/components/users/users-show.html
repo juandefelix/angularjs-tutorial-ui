@@ -2,6 +2,8 @@
   <aside class="col-md-4">
     <section class="user_info">
       <h1>
+        <img ng-src="https://secure.gravatar.com/avatar/{{ ctrl.user.gravatar_id }}"
+             alt="{{ ctrl.user.name }}" class="gravatar"/>
         {{ctrl.user.name}}
       </h1>
     </section>

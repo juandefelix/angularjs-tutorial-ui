@@ -5,6 +5,8 @@
 <ul class="users">
   <li dir-paginate="user in ctrl.users | itemsPerPage: ctrl.pagination.itemsPerPage"
       total-items="ctrl.pagination.totalItems" current-page="ctrl.pagination.page">
+    <img ng-src="https://secure.gravatar.com/avatar/{{ user.gravatar_id }}"
+         alt="{{ user.name }}" class="gravatar gravatar-index"/>
     <a ng-href="#/users/{{user.id}}">{{user.name}}</a> ({{user.email}})
     <span ng-if="ctrl.currentUserIsAdmin()">
        | <a href="" ng-click="ctrl.deleteUser(user)" at-confirm="ctrl.CONFIRM">delete</a>

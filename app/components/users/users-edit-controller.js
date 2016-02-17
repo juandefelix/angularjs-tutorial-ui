@@ -46,6 +46,7 @@
             sessionsService.requireCorrectUser($routeParams.id);
             ctrl.editUser.username = sessionsService.currentUser.name;
             ctrl.editUser.email = sessionsService.currentUser.email;
+            ctrl.editUser.gravatar_id = sessionsService.currentUser.gravatar_id;
         }
     }
 
