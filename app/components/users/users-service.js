@@ -24,12 +24,12 @@ function UsersService($q, $resource, environment) {
                 url: environment.SERVER_URL + '/api/users/activate/:id/:token',
             },
             createMicropost: {
-                method: 'PUT',
-                url: environment.SERVER_URL + '/api/users/new_micropost/:id'
+                method: 'POST',
+                url: environment.SERVER_URL + '/api/users/:id/microposts'
             },
             deleteMicropost: {
                 method: 'DELETE',
-                url: environment.SERVER_URL + '/api/users/:id/:micropost_id'
+                url: environment.SERVER_URL + '/api/users/:id/microposts/:micropost_id'
             }
         }
     );
